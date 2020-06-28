@@ -12,14 +12,14 @@ This implementation is inspired by [TikTokApi](https://github.com/davidteather/T
 - [Detailed Documentation](#detailed-documentation)
     - [Methods](#methods)
         - [TikTok Class](#tiktok-class)
-        - [Get Trending Videos](#get-trending)
+        - [Get Trending Videos](#get-trending-videos)
         - [Get User](#get-user)
         - [Get Videos By UserName](#get-videos-by-username)
         - [Get Likes By UserName](#get-likes-by-username)
         - [Get HashTag](#get-hashtag)
         - [Get Videos By HashTag](#get-videos-by-hashtag)
         - [Get Music](#get-music)
-        - [Get Music By UserName](#get-videos-by-music)
+        - [Get Videos By Music](#get-videos-by-music)
         - [Get Video By Id](#get-video-by-id)
 - [Built With](#built-with)
 - [Authors](#authors)
@@ -72,7 +72,7 @@ Inputs
 __init__(self, language='en', region='IN', cookie=None)
 ```
 
-#### Get Trending
+#### Get Trending Videos
 Inputs
 * count - Number of videos to fetch  
 
