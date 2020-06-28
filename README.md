@@ -30,6 +30,12 @@ This implementation is inspired by [TikTokApi](https://github.com/davidteather/T
 To get started using this API, follow the instructions below.
 
 ### Installing
+Pip
+```
+pip install PyTikTokAPI
+```
+
+Install from source
 ```
 git clone https://github.com/avilash/TikTokAPI-Python.git
 python setup.py install
