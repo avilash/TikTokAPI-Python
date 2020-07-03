@@ -42,6 +42,10 @@ python setup.py install
 ```
 
 ## Quick Start Guide
+Import
+```
+from TikTokAPI import TikTokAPI
+```
 Get the most trending Videos on TikTok
 ```
 api = TikTokAPI()
