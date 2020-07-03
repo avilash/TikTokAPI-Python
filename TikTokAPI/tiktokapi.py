@@ -1,5 +1,5 @@
 import os
-from .utils import random_key, build_get_url, get_req_json
+from .utils import random_key, build_get_url, get_req_json, get_req_content, get_req_text
 from .tiktok_browser import TikTokBrowser
 
 
@@ -194,3 +194,25 @@ class TikTokAPI(object):
         for key, val in self.default_params.items():
             params[key] = val
         return self.send_get_request(url, params)
+
+    def downloadVideoById(self, video_id, save_path):
+        video_info = self.getVideoById(video_id)
+        video_url = video_info["itemInfo"]["itemStruct"]["video"]["downloadAddr"]
+        headers = {"User-Agent": "okhttp"}
+        video_data = get_req_content(video_url, params=None, headers=headers)
+        with open(save_path, 'wb') as f:
+            f.write(video_data)
+
+    def downloadVideoByIdNoWatermark(self, video_id, save_path):
+        video_info = self.getVideoById(video_id)
+        video_url = video_info["itemInfo"]["itemStruct"]["video"]["downloadAddr"]
+        headers = {"User-Agent": "okhttp"}
+        video_data = get_req_text(video_url, params=None, headers=headers)
+        pos = video_data.find("vid:")
+        video_url_no_wm = "https://api2-16-h2.musical.ly/aweme/v1/play/?video_id={" \
+                          "}&vr_type=0&is_play_url=1&source=PackSourceEnum_PUBLISH&media_type=4" \
+            .format(video_data[pos+4:pos+36])
+        headers = {"User-Agent": "okhttp"}
+        video_data_no_wm = get_req_content(video_url_no_wm, params=None, headers=headers)
+        with open(save_path, 'wb') as f:
+            f.write(video_data_no_wm)

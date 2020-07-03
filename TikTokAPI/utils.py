@@ -28,6 +28,16 @@ def get_req_json(url, params=None, headers=None):
     return json.loads(r.text)
 
 
+def get_req_content(url, params=None, headers=None):
+    r = requests.get(url, params=params, headers=headers)
+    return r.content
+
+
+def get_req_text(url, params=None, headers=None):
+    r = requests.get(url, params=params, headers=headers)
+    return r.text
+
+
 def python_list2_web_list(data):
     web_list = "[\""
     web_list += '", "'.join(data)

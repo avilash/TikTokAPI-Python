@@ -21,6 +21,8 @@ This implementation is inspired by [TikTokApi](https://github.com/davidteather/T
         - [Get Music](#get-music)
         - [Get Videos By Music](#get-videos-by-music)
         - [Get Video By Id](#get-video-by-id)
+        - [Download Video](#download-video)
+        - [Download Video no Watermark](#download-video-no-watermark)
 - [Built With](#built-with)
 - [Authors](#authors)
 - [License](#license)
@@ -152,10 +154,28 @@ getVideosByMusic(self, music_id, count=30)
 
 #### Get Video By Id
 Inputs
-* video_id - VIdeo Id, eg - <em>6843481669886954757</em>
+* video_id - Video Id, eg - <em>6843481669886954757</em>
 
 ```buildoutcfg
 getVideoById(self, video_id)
+```
+
+#### Download Video
+Inputs
+* video_id - Video Id, eg - <em>6843481669886954757</em>
+* save_path - Path where the downloaded video should be saved
+
+```buildoutcfg
+downloadVideoById(self, video_id, save_path)
+```
+
+#### Download Video No Watermark
+Inputs
+* video_id - Video Id, eg - <em>6843481669886954757</em>
+* save_path - Path where the downloaded video should be saved
+
+```buildoutcfg
+downloadVideoByIdNoWatermark(self, video_id, save_path)
 ```
 
 ## Built With
