@@ -190,3 +190,4 @@ downloadVideoByIdNoWatermark(self, video_id, save_path)
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
 
+[![Run on Repl.it](https://repl.it/badge/github/avilash/TikTokAPI-Python)](https://repl.it/github/avilash/TikTokAPI-Python)
