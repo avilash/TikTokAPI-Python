@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name="PyTikTokAPI",
     packages=setuptools.find_packages(),
-    version="0.0.3",
+    version="0.0.4",
     license='MIT',
     author="Avilash Kumar",
     author_email="avilashkumar4@gmail.com",
