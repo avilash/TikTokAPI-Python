@@ -1,7 +1,6 @@
 import os
 import asyncio
 from pyppeteer import launch
-from pyppeteer_stealth import stealth
 from .utils import python_list2_web_list
 
 
@@ -58,7 +57,9 @@ class TikTokBrowser:
         browser = await launch(self.options)
         page = await browser.newPage()
 
-        await stealth(page)
+        await page.evaluateOnNewDocument("""() => {
+            delete navigator.__proto__.webdriver;
+        }""")
 
         await page.setUserAgent(self.userAgent)
         await page.setExtraHTTPHeaders({
