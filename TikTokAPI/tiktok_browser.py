@@ -17,6 +17,7 @@ class TikTokBrowser:
             "--ignore-certifcate-errors-spki-list",
             "--user-agent=" + self.userAgent,
         ]
+
         if proxy is not None:
             self.args.append("--proxy-server=" + proxy)
 

@@ -11,7 +11,7 @@ class TikTokAPI(object):
 
     def __init__(self, language='en', browser_lang="en-US", timezone="Asia/Kolkata", region='IN', cookie=None):
 
-        # Randomize user agent
+        # Randomize user-agent
         software_names = [SoftwareName.CHROME.value]
         operating_system = [OperatingSystem.WINDOWS.value,
                             OperatingSystem.LINUX.value]
