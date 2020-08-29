@@ -3,13 +3,25 @@ import random
 import urllib.parse
 from .utils import random_key, build_get_url, get_req_json, get_req_content, get_req_text
 from .tiktok_browser import TikTokBrowser
+from random_user_agent.user_agent import UserAgent
+from random_user_agent.params import SoftwareName, OperatingSystem
 
 
 class TikTokAPI(object):
 
     def __init__(self, language='en', browser_lang="en-US", timezone="Asia/Kolkata", region='IN', cookie=None):
+
+        # Randomize user agent
+        software_names = [SoftwareName.CHROME.value]
+        operating_system = [OperatingSystem.WINDOWS.value,
+                            OperatingSystem.LINUX.value]
+        user_agent_rotator = UserAgent(software_names=software_names,
+                                       operating_system=operating_system,
+                                       limit=100)
+
         self.base_url = "https://t.tiktok.com/api"
-        self.user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0"
+        # self.user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0"
+        self.user_agent = user_agent_rotator.get_random_user_agent()
 
         self.headers = {
             "User-Agent": self.user_agent,
@@ -58,7 +70,7 @@ class TikTokAPI(object):
         self.did_key = "did"
         self.tiktok_browser = TikTokBrowser(self.user_agent)
 
-    def send_get_request(self, url, params, extra_headers=None):
+    def send_get_request(self, url, params, extra_headers=None, proxy=None):
         url = build_get_url(url, params)
         did = str(random.randint(10000, 999999999))
         url = build_get_url(url, {self.did_key: did}, append=True)
@@ -75,7 +87,7 @@ class TikTokAPI(object):
         data = get_req_json(url, params=None, headers=self.headers)
         return data
 
-    def getTrending(self, count=30):
+    def getTrending(self, count=30, proxy=None):
         url = self.base_url + "/item_list/"
         req_default_params = {
             "id": "1",
@@ -94,7 +106,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def getUserByName(self, user_name):
+    def getUserByName(self, user_name, proxy=None):
         url = self.base_url + "/user/detail/"
         params = {
             "uniqueId": user_name
@@ -103,7 +115,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def getVideosByUserName(self, user_name, count=30):
+    def getVideosByUserName(self, user_name, count=30, proxy=None):
         user_data = self.getUserByName(user_name)
         user_obj = user_data["userInfo"]["user"]
         user_id = user_obj["id"]
@@ -126,8 +138,8 @@ class TikTokAPI(object):
         for key, val in self.default_params.items():
             params[key] = val
         return self.send_get_request(url, params)
-    
-    def getLikesByUserName(self, user_name, count=30):
+
+    def getLikesByUserName(self, user_name, count=30, proxy=None):
         user_data = self.getUserByName(user_name)
         user_obj = user_data["userInfo"]["user"]
         user_id = user_obj["id"]
@@ -151,7 +163,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def getHashTag(self, hashTag):
+    def getHashTag(self, hashTag, proxy=None):
         url = self.base_url + "/challenge/detail/"
         params = {
             "challengeName": hashTag.replace("#", "")
@@ -160,7 +172,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def getVideosByHashTag(self, hashTag, count=30):
+    def getVideosByHashTag(self, hashTag, count=30, proxy=None):
         hashTag = hashTag.replace("#", "")
         hashTag_obj = self.getHashTag(hashTag)
         hashTag_id = hashTag_obj["challengeInfo"]["challenge"]["id"]
@@ -184,7 +196,7 @@ class TikTokAPI(object):
         extra_headers = {"Referer": "https://www.tiktok.com/tag/" + str(hashTag)}
         return self.send_get_request(url, params, extra_headers=extra_headers)
 
-    def getMusic(self, music_id):
+    def getMusic(self, music_id, proxy=None):
         url = self.base_url + "/music/detail/"
         params = {
             "musicId": music_id
@@ -193,7 +205,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def getVideosByMusic(self, music_id, count=30):
+    def getVideosByMusic(self, music_id, count=30, proxy=None):
         url = "https://m.tiktok.com/share/item/list"
         req_default_params = {
             "secUid": "",
@@ -214,7 +226,7 @@ class TikTokAPI(object):
         extra_headers = {"Referer": "https://www.tiktok.com/music/original-sound-" + str(music_id)}
         return self.send_get_request(url, params, extra_headers=extra_headers)
 
-    def getVideoById(self, video_id):
+    def getVideoById(self, video_id, proxy=None):
         url = self.base_url + "/item/detail/"
         params = {
             "itemId": str(video_id)
@@ -223,7 +235,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def downloadVideoById(self, video_id, save_path):
+    def downloadVideoById(self, video_id, save_path, proxy=None):
         video_info = self.getVideoById(video_id)
         video_url = video_info["itemInfo"]["itemStruct"]["video"]["downloadAddr"]
         headers = {"User-Agent": "okhttp"}
@@ -231,7 +243,7 @@ class TikTokAPI(object):
         with open(save_path, 'wb') as f:
             f.write(video_data)
 
-    def downloadVideoByIdNoWatermark(self, video_id, save_path):
+    def downloadVideoByIdNoWatermark(self, video_id, save_path, proxy=None):
         video_info = self.getVideoById(video_id)
         video_url = video_info["itemInfo"]["itemStruct"]["video"]["downloadAddr"]
         headers = {"User-Agent": "okhttp"}
@@ -239,7 +251,7 @@ class TikTokAPI(object):
         pos = video_data.find("vid:")
         video_url_no_wm = "https://api2-16-h2.musical.ly/aweme/v1/play/?video_id={" \
                           "}&vr_type=0&is_play_url=1&source=PackSourceEnum_PUBLISH&media_type=4" \
-            .format(video_data[pos+4:pos+36])
+            .format(video_data[pos + 4:pos + 36])
         headers = {"User-Agent": "okhttp"}
         video_data_no_wm = get_req_content(video_url_no_wm, params=None, headers=headers)
         with open(save_path, 'wb') as f:

@@ -6,7 +6,7 @@ from .utils import python_list2_web_list
 
 class TikTokBrowser:
 
-    def __init__(self, user_agent):
+    def __init__(self, user_agent, proxy=None):
         self.userAgent = user_agent
         self.args = [
             "--no-sandbox",
@@ -17,6 +17,9 @@ class TikTokBrowser:
             "--ignore-certifcate-errors-spki-list",
             "--user-agent=" + self.userAgent,
         ]
+        if proxy is not None:
+            self.args.append("--proxy-server=" + proxy)
+
         self.options = {
             'args': self.args,
             'headless': True,
