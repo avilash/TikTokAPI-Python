@@ -7,6 +7,14 @@ from .utils import python_list2_web_list
 class TikTokBrowser:
 
     def __init__(self, user_agent):
+
+        # If not running in the main thread, it's necessary to create & set a
+        # new event loop.
+        try:
+            asyncio.get_event_loop()
+        except RuntimeError:
+            asyncio.set_event_loop(asyncio.new_event_loop())
+
         self.userAgent = user_agent
         self.args = [
             "--no-sandbox",
