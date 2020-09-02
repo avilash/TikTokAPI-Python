@@ -8,13 +8,6 @@ class TikTokBrowser:
 
     def __init__(self, user_agent):
 
-        # If not running in the main thread, it's necessary to create & set a
-        # new event loop.
-        try:
-            asyncio.get_event_loop()
-        except RuntimeError:
-            asyncio.set_event_loop(asyncio.new_event_loop())
-
         self.userAgent = user_agent
         self.args = [
             "--no-sandbox",
@@ -59,6 +52,16 @@ class TikTokBrowser:
         self.tiktok_dummy_page = "file://" + os.path.join(parent_folder, "website", "tiktok.html")
 
     def fetch_auth_params(self, url, language='en'):
+
+        # If not running in the main thread, it's necessary to create & set a
+        # new event loop.
+        try:
+            asyncio.get_event_loop()
+            print('get_event_loop')
+        except RuntimeError:
+            asyncio.set_event_loop(asyncio.new_event_loop())
+            print('new_event_loop')
+
         return asyncio.get_event_loop().run_until_complete(self.async_fetch_auth_params(url, language))
 
     async def async_fetch_auth_params(self, url, language):
