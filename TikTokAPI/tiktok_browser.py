@@ -57,10 +57,8 @@ class TikTokBrowser:
         # new event loop.
         try:
             asyncio.get_event_loop()
-            print('get_event_loop')
         except RuntimeError:
             asyncio.set_event_loop(asyncio.new_event_loop())
-            print('new_event_loop')
 
         return asyncio.get_event_loop().run_until_complete(self.async_fetch_auth_params(url, language))
 
