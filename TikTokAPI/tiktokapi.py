@@ -1,4 +1,5 @@
 import os
+import string
 import random
 import urllib.parse
 from .utils import random_key, build_get_url, get_req_json, get_req_content, get_req_text
@@ -12,7 +13,9 @@ class TikTokAPI(object):
         self.user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0"
 
         self.headers = {
-            "User-Agent": self.user_agent,
+            'Host': 't.tiktok.com',
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0',
+            # 'Cookie': 'tt_webid_v2=6913043173028431361; tt_webid=6913043173028431361; tt_csrf_token=taRJpJNwpA9NmrpdiwSwaysu'
         }
         self.language = language
         self.browser_lang = browser_lang
@@ -20,7 +23,7 @@ class TikTokAPI(object):
         self.region = region
 
         if cookie is None:
-            self.verifyFp = random_key(16)
+            self.verifyFp = "verify_kjfaff24_sOZVAInw_G0Sm_4BtI_BStb_SB6moxzLxFrr"
         else:
             self.verifyFp = cookie
         self.default_params = {
@@ -60,7 +63,7 @@ class TikTokAPI(object):
 
     def send_get_request(self, url, params, extra_headers=None):
         url = build_get_url(url, params)
-        did = str(random.randint(10000, 999999999))
+        did = ''.join(random.choice(string.digits) for num in range(19))
         url = build_get_url(url, {self.did_key: did}, append=True)
         signature = self.tiktok_browser.fetch_auth_params(url, language=self.language)
         url = build_get_url(url, {self.signature_key: signature}, append=True)
@@ -95,9 +98,10 @@ class TikTokAPI(object):
         return self.send_get_request(url, params)
 
     def getUserByName(self, user_name):
-        url = self.base_url + "/user/detail/"
+        url = "https://t.tiktok.com/node/share/user/@" + user_name
         params = {
-            "uniqueId": user_name
+            "uniqueId": user_name,
+            "validUniqueId": user_name,
         }
         for key, val in self.default_params.items():
             params[key] = val
@@ -164,7 +168,7 @@ class TikTokAPI(object):
         hashTag = hashTag.replace("#", "")
         hashTag_obj = self.getHashTag(hashTag)
         hashTag_id = hashTag_obj["challengeInfo"]["challenge"]["id"]
-        url = "https://m.tiktok.com/share/item/list"
+        url = self.base_url + "/challenge/item_list/"
         req_default_params = {
             "secUid": "",
             "type": "3",
@@ -174,8 +178,9 @@ class TikTokAPI(object):
             "recType": ""
         }
         params = {
-            "id": str(hashTag_id),
+            "challengeID": str(hashTag_id),
             "count": str(count),
+            "cursor": "0",
         }
         for key, val in req_default_params.items():
             params[key] = val
@@ -194,7 +199,7 @@ class TikTokAPI(object):
         return self.send_get_request(url, params)
 
     def getVideosByMusic(self, music_id, count=30):
-        url = "https://m.tiktok.com/share/item/list"
+        url = self.base_url + "/music/item_list/"
         req_default_params = {
             "secUid": "",
             "type": "4",
@@ -204,8 +209,9 @@ class TikTokAPI(object):
             "recType": ""
         }
         params = {
-            "id": str(music_id),
+            "musicID": str(music_id),
             "count": str(count),
+            "cursor": "0",
         }
         for key, val in req_default_params.items():
             params[key] = val
