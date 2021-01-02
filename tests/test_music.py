@@ -1,14 +1,15 @@
 import argparse
 from TikTokAPI import TikTokAPI
+from utils import read_json_from_file
 
 
 def getMusic(music_id):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getMusic(music_id)
 
 
 def getVideosByMusic(music_id):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getVideosByMusic(music_id, count=10)
 
 

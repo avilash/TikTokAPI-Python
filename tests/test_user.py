@@ -1,19 +1,20 @@
 import argparse
 from TikTokAPI import TikTokAPI
+from utils import read_json_from_file
 
 
 def getUser(user_name):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getUserByName(user_name)
 
 
 def getVideosByUserName(user_name):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getVideosByUserName(user_name, count=1)
 
 
 def getLikesByUserName(user_name):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getLikesByUserName(user_name, count=1)
 
 

@@ -9,15 +9,17 @@ from .tiktok_browser import TikTokBrowser
 class VideoException(Exception):
     pass
 
+
 class TikTokAPI(object):
 
-    def __init__(self, cookie={}, language='en', browser_lang="en-US", timezone="Asia/Kolkata", region='IN'):
+    def __init__(self, cookie=None, language='en', browser_lang="en-US", timezone="Asia/Kolkata", region='IN'):
         self.base_url = "https://t.tiktok.com/api"
         self.user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0"
 
+        if cookie is None:
+            cookie = {}
         self.verifyFp = cookie.get("s_v_web_id", "verify_kjf974fd_y7bupmR0_3uRm_43kF_Awde_8K95qt0GcpBk")
         self.tt_webid = cookie.get("tt_webid", "6913027209393473025")
-
 
         self.headers = {
             'Host': 't.tiktok.com',
@@ -134,7 +136,7 @@ class TikTokAPI(object):
         for key, val in self.default_params.items():
             params[key] = val
         return self.send_get_request(url, params)
-    
+
     def getLikesByUserName(self, user_name, count=30):
         user_data = self.getUserByName(user_name)
         user_obj = user_data["userInfo"]["user"]
@@ -249,7 +251,7 @@ class TikTokAPI(object):
             raise VideoException("Video without watermark not available in new videos")
         video_url_no_wm = "https://api2-16-h2.musical.ly/aweme/v1/play/?video_id={" \
                           "}&vr_type=0&is_play_url=1&source=PackSourceEnum_PUBLISH&media_type=4" \
-            .format(video_data[pos+4:pos+36])
+            .format(video_data[pos + 4:pos + 36])
 
         video_data_no_wm = get_req_content(video_url_no_wm, params=None, headers=self.headers)
         with open(save_path, 'wb') as f:

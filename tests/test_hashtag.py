@@ -1,14 +1,15 @@
 import argparse
 from TikTokAPI import TikTokAPI
+from utils import read_json_from_file
 
 
 def getHashTag(hashTag):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getHashTag(hashTag)
 
 
 def getVideosByHashTag(hashTag):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getVideosByHashTag(hashTag, count=10)
 
 
