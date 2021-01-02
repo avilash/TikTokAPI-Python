@@ -6,26 +6,30 @@ from .utils import random_key, build_get_url, get_req_json, get_req_content, get
 from .tiktok_browser import TikTokBrowser
 
 
+class VideoException(Exception):
+    pass
+
 class TikTokAPI(object):
 
-    def __init__(self, language='en', browser_lang="en-US", timezone="Asia/Kolkata", region='IN', cookie=None):
+    def __init__(self, cookie={}, language='en', browser_lang="en-US", timezone="Asia/Kolkata", region='IN'):
         self.base_url = "https://t.tiktok.com/api"
         self.user_agent = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0"
+
+        self.verifyFp = cookie.get("s_v_web_id", "verify_kjf974fd_y7bupmR0_3uRm_43kF_Awde_8K95qt0GcpBk")
+        self.tt_webid = cookie.get("tt_webid", "6913027209393473025")
+
 
         self.headers = {
             'Host': 't.tiktok.com',
             'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:79.0) Gecko/20100101 Firefox/79.0',
-            # 'Cookie': 'tt_webid_v2=6913043173028431361; tt_webid=6913043173028431361; tt_csrf_token=taRJpJNwpA9NmrpdiwSwaysu'
+            'Referer': 'https://www.tiktok.com/',
+            'Cookie': 'tt_webid_v2={}; tt_webid={}'.format(self.tt_webid, self.tt_webid)
         }
         self.language = language
         self.browser_lang = browser_lang
         self.timezone = timezone
         self.region = region
 
-        if cookie is None:
-            self.verifyFp = "verify_kjfaff24_sOZVAInw_G0Sm_4BtI_BStb_SB6moxzLxFrr"
-        else:
-            self.verifyFp = cookie
         self.default_params = {
             "aid": "1988",
             "app_name": "tiktok_web",
@@ -231,22 +235,22 @@ class TikTokAPI(object):
 
     def downloadVideoById(self, video_id, save_path):
         video_info = self.getVideoById(video_id)
-        video_url = video_info["itemInfo"]["itemStruct"]["video"]["downloadAddr"]
-        headers = {"User-Agent": "okhttp"}
-        video_data = get_req_content(video_url, params=None, headers=headers)
+        video_url = video_info["itemInfo"]["itemStruct"]["video"]["playAddr"]
+        video_data = get_req_content(video_url, params=None, headers=self.headers)
         with open(save_path, 'wb') as f:
             f.write(video_data)
 
     def downloadVideoByIdNoWatermark(self, video_id, save_path):
         video_info = self.getVideoById(video_id)
         video_url = video_info["itemInfo"]["itemStruct"]["video"]["downloadAddr"]
-        headers = {"User-Agent": "okhttp"}
-        video_data = get_req_text(video_url, params=None, headers=headers)
+        video_data = get_req_text(video_url, params=None, headers=self.headers)
         pos = video_data.find("vid:")
+        if pos == -1:
+            raise VideoException("Video without watermark not available in new videos")
         video_url_no_wm = "https://api2-16-h2.musical.ly/aweme/v1/play/?video_id={" \
                           "}&vr_type=0&is_play_url=1&source=PackSourceEnum_PUBLISH&media_type=4" \
             .format(video_data[pos+4:pos+36])
-        headers = {"User-Agent": "okhttp"}
-        video_data_no_wm = get_req_content(video_url_no_wm, params=None, headers=headers)
+
+        video_data_no_wm = get_req_content(video_url_no_wm, params=None, headers=self.headers)
         with open(save_path, 'wb') as f:
             f.write(video_data_no_wm)
