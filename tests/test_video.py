@@ -1,19 +1,20 @@
 import argparse
 from TikTokAPI import TikTokAPI
+from utils import read_json_from_file
 
 
 def getVideoById(video_id):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     return api.getVideoById(video_id)
 
 
 def downloadVideoById(video_id):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     api.downloadVideoById(video_id, video_id+".mp4")
 
 
 def downloadVideoByIdNoWatermark(video_id):
-    api = TikTokAPI()
+    api = TikTokAPI(read_json_from_file("cookie.json"))
     api.downloadVideoByIdNoWatermark(video_id, video_id+"_no_wm.mp4")
 
 
