@@ -137,7 +137,7 @@ class TikTokAPI(object):
             params[key] = val
         return self.send_get_request(url, params)
 
-    def getLikesByUserName(self, user_name, count=30):
+    def getLikesByUserName(self, user_name, count=30, cursor=0):
         user_data = self.getUserByName(user_name)
         user_obj = user_data["userInfo"]["user"]
         user_id = user_obj["id"]
@@ -147,7 +147,7 @@ class TikTokAPI(object):
         req_default_params = {
             "type": "2",
             "sourceType": "9",
-            "cursor": "0"
+            "cursor": cursor
         }
         params = {
             "id": user_id,
