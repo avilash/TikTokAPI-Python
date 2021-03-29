@@ -147,7 +147,7 @@ class TikTokAPI(object):
         req_default_params = {
             "type": "2",
             "sourceType": "9",
-            "cursor": cursor
+            "cursor": str(cursor)
         }
         params = {
             "id": user_id,
