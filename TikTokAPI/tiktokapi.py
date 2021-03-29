@@ -143,12 +143,11 @@ class TikTokAPI(object):
         user_id = user_obj["id"]
         secUid = user_obj["secUid"]
 
-        url = self.base_url + "/item_list/"
+        url = self.base_url + "/favorite/item_list/"
         req_default_params = {
             "type": "2",
-            "maxCursor": "0",
-            "minCursor": "0",
             "sourceType": "9",
+            "cursor": "0"
         }
         params = {
             "id": user_id,
