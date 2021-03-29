@@ -81,8 +81,6 @@ class TikTokAPI(object):
                 headers[key] = val
             for key, val in self.headers.items():
                 headers[key] = val
-        print("Headers are: " + str(self.headers))
-        print("Updated URL is: " + str(url))
         data = get_req_json(url, params=None, headers=self.headers)
         return data
 
@@ -112,8 +110,6 @@ class TikTokAPI(object):
         }
         for key, val in self.default_params.items():
             params[key] = val
-        #print("URL is: " + str(url))
-        #print("Params are: " + str(params))
         return self.send_get_request(url, params)
 
     def getVideosByUserName(self, user_name, count=30, cursor=0):
