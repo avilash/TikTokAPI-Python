@@ -81,18 +81,19 @@ class TikTokAPI(object):
                 headers[key] = val
             for key, val in self.headers.items():
                 headers[key] = val
+        print("Headers are: " + str(self.headers))
+        print("Updated URL is: " + str(url))
         data = get_req_json(url, params=None, headers=self.headers)
         return data
 
-    def getTrending(self, count=30):
-        url = self.base_url + "/item_list/"
+    def getTrending(self, count=30, cursor=0):
+        url = self.base_url + "/recommend/item_list/"
         req_default_params = {
             "id": "1",
             "type": "5",
             "secUid": "",
-            "maxCursor": "0",
-            "minCursor": "0",
             "sourceType": "12",
+            "cursor": str(cursor)
         }
         params = {
             "count": str(count)
@@ -111,20 +112,21 @@ class TikTokAPI(object):
         }
         for key, val in self.default_params.items():
             params[key] = val
+        #print("URL is: " + str(url))
+        #print("Params are: " + str(params))
         return self.send_get_request(url, params)
 
-    def getVideosByUserName(self, user_name, count=30):
+    def getVideosByUserName(self, user_name, count=30, cursor=0):
         user_data = self.getUserByName(user_name)
         user_obj = user_data["userInfo"]["user"]
         user_id = user_obj["id"]
         secUid = user_obj["secUid"]
 
-        url = self.base_url + "/item_list/"
+        url = self.base_url + "/post/item_list/"
         req_default_params = {
             "type": "1",
-            "maxCursor": "0",
-            "minCursor": "0",
             "sourceType": "8",
+            "cursor": str(cursor)
         }
         params = {
             "id": user_id,
