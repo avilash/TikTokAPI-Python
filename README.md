@@ -1,4 +1,3 @@
-
 # Unofficial TikTok API Wrapper in Python
 
 This is an unofficial TikTok Api python wrapper. I have an App using this API, and thus will constantly keep updating this wrapper  
@@ -32,6 +31,7 @@ This implementation is inspired by [TikTokApi](https://github.com/davidteather/T
 To get started using this API, follow the instructions below.
 
 ### Installing
+
 Pip
 ```
 pip install PyTikTokAPI
@@ -45,35 +45,35 @@ python setup.py install
 
 ## Quick Start Guide
 Import
-```
+```py
 from TikTokAPI import TikTokAPI
 ```
 Get your keys from Cookie. You can get them from the Applications tab in Chrome developer console.  
 By default it used hardcoded values which may not work after some time.  
 The keys to extract are `s_v_web_id` and `tt_webid`
-```
+```py
 cookie = {
   "s_v_web_id": "<your_key>",
   "tt_webid": "<your_key>"
 }
 ```
 Get the most trending Videos on TikTok
-```
+```py
 api = TikTokAPI(cookie=cookie)
 retval = api.getTrending(count=5)
 ```
 Get a user by name
-```
+```py
 api = TikTokAPI(cookie=cookie)
 user_obj = api.getUserByName("fcbarcelona")
 ```
 Get videos of a user
-```
+```py
 api = TikTokAPI(cookie=cookie)
 user_videos = api.getVideosByUserName("fcbarcelona")
 ```
 Get likes of a user
-```
+```py
 api = TikTokAPI(cookie=cookie)
 user_videos = api.getLikesByUserName("fcbarcelona")
 ```
@@ -89,7 +89,7 @@ Inputs
 * region - Self explanatory
 * cookie - The TikTok Cookie containing the parameter <em>s_v_web_id</em>. If not provided, the parameter will be generated.
 
-```buildoutcfg
+```py
 __init__(self, language='en', region='IN', cookie=None)
 ```
 
@@ -97,7 +97,7 @@ __init__(self, language='en', region='IN', cookie=None)
 Inputs
 * count - Number of videos to fetch  
 
-```buildoutcfg
+```py
 getTrending(self, count=30)
 ```
 
@@ -105,7 +105,7 @@ getTrending(self, count=30)
 Inputs
 * user_name - Username, eg - <em>fcbarcelona</em>
 
-```buildoutcfg
+```py
 getUserByName(self, user_name)
 ```
 
@@ -114,7 +114,7 @@ Inputs
 * user_name - Username, eg - <em>fcbarcelona</em>
 * count - Number of videos to fetch
 
-```buildoutcfg
+```py
 getVideosByUserName(self, user_name, count=30)
 ```
 
@@ -123,7 +123,7 @@ Inputs
 * user_name - Username, eg - <em>fcbarcelona</em>
 * count - Number of videos to fetch
 
-```buildoutcfg
+```py
 getLikesByUserName(self, user_name, count=30)
 ```
 
@@ -131,7 +131,7 @@ getLikesByUserName(self, user_name, count=30)
 Inputs
 * hashTag - HashTag, eg - <em>#fcbarcelona</em>
 
-```buildoutcfg
+```py
 getHashTag(self, hashTag)
 ```
 
@@ -140,7 +140,7 @@ Inputs
 * hashTag - HashTag, eg - <em>#fcbarcelona</em>
 * count - Number of videos to fetch
 
-```buildoutcfg
+```py
 getVideosByHashTag(self, hashTag, count=30)
 ```
 
@@ -148,7 +148,7 @@ getVideosByHashTag(self, hashTag, count=30)
 Inputs
 * music_id - Music Id, eg - <em>6704854531001289474</em>
 
-```buildoutcfg
+```py
 getMusic(self, music_id)
 ```
 
@@ -157,7 +157,7 @@ Inputs
 * music_id - Music Id, eg - <em>6704854531001289474</em>
 * count - Number of videos to fetch
 
-```buildoutcfg
+```py
 getVideosByMusic(self, music_id, count=30)
 ```
 
@@ -165,7 +165,7 @@ getVideosByMusic(self, music_id, count=30)
 Inputs
 * video_id - Video Id, eg - <em>6843481669886954757</em>
 
-```buildoutcfg
+```py
 getVideoById(self, video_id)
 ```
 
@@ -174,7 +174,7 @@ Inputs
 * video_id - Video Id, eg - <em>6843481669886954757</em>
 * save_path - Path where the downloaded video should be saved
 
-```buildoutcfg
+```py
 downloadVideoById(self, video_id, save_path)
 ```
 
@@ -183,7 +183,7 @@ Inputs
 * video_id - Video Id, eg - <em>6843481669886954757</em>
 * save_path - Path where the downloaded video should be saved
 
-```buildoutcfg
+```py
 downloadVideoByIdNoWatermark(self, video_id, save_path)
 ```
 
@@ -197,6 +197,6 @@ downloadVideoByIdNoWatermark(self, video_id, save_path)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](/LICENSE) file for details
 
 [![Run on Repl.it](https://repl.it/badge/github/avilash/TikTokAPI-Python)](https://repl.it/github/avilash/TikTokAPI-Python)
