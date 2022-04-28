@@ -50,11 +50,11 @@ from TikTokAPI import TikTokAPI
 ```
 Get your keys from Cookie. You can get them from the Applications tab in Chrome developer console.  
 By default it used hardcoded values which may not work after some time.  
-The keys to extract are `s_v_web_id` and `tt_webid`
+The keys to extract are `s_v_web_id` and `sid_ucp_v1`
 ```
 cookie = {
   "s_v_web_id": "<your_key>",
-  "tt_webid": "<your_key>"
+  "sid_ucp_v1": "<your_key>"
 }
 ```
 Get the most trending Videos on TikTok
